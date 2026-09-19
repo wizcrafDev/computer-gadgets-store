@@ -19,12 +19,12 @@ export const register = async (req, res) => {
     //   return res.status(400).json({ message: "user already exist" });
 
     // hash the password
-    const hashed_password = await bcrypt.hash(password, 5);
+    const hashed_password = await bcrypt.hash(password, 10);
 
     // save user to db
-    // const user = await prisma.user.create({
-    //   data: { name, email, password: hashed_password },
-    // });
+    const user = await prisma.user.create({
+      data: { name, email, password: hashed_password },
+    });
 
     // send otp
     messenger.sendMail(
@@ -62,7 +62,7 @@ export const login = async (req, res) => {
     // check if user exist
     const exist_user = await prisma.user.findUnique({ where: { email } });
     if (!exist_user)
-      return res.status(400).json({ message: "invalid credentials 1" });
+      return res.status(400).json({ message: "invalid email or password" });
 
     console.log("exist_user_password: ", typeof exist_user.password);
     // compare password
@@ -71,14 +71,30 @@ export const login = async (req, res) => {
       exist_user.password,
     );
     if (!is_password_match)
-      return res.status(400).json({ message: "invalid credentials 2" });
-
+      return res.status(400).json({ message: "invalid email or password" });
+    //create payload with user_id and role
+    const payload = {
+      user_id: exist_user.id,
+      role: exist_user.role,
+      //this role will return "ADMIN" or "USER"
+    };
     // return (jwt token)
-    const token = await generate_jwt({ user_id: exist_user.id });
-    return res.status(200).json({ token });
+    const token = await generate_jwt(payload);
+    return res.status(200).json({
+      message: "Login Successful",
+      token: token,
+      user: {
+        id: exist_user.id,
+        name: exist_user.name,
+        email: exist_user.email,
+        role: exist_user.role,
+      },
+    });
   } catch (error) {
     console.log("[/login] error: ", error.message);
-    return res.sendStatus(500);
+    return res
+      .sendStatus(500)
+      .json({ message: "internal server errpr during login" });
   }
 };
 

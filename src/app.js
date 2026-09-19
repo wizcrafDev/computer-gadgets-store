@@ -1,6 +1,9 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
 import { userRoute } from "./routes/userRoutes.js";
 import { authRoutes } from "./routes/authRoutes.js";
+import { productRoutes } from "./routes/productRoutes.js";
 import { logger } from "./middlewares/logger.js";
 import { auth_middleware } from "./middlewares/authMiddleware.js";
 
@@ -11,5 +14,38 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(logger);
 // app.use(auth_middleware);
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "E-Commerce API Documentation",
+      version: "1.0.0",
+      description:
+        "API for user authenticaton, products, cart, and other management. ",
+    },
+    servers: [
+      {
+        url: "http://localhost:5001",
+        description: "Local Development Server",
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+  },
+  apis: ["./src/routes/*.js"],
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use("/users", userRoute);
 app.use("/auth", authRoutes);
+app.use("/products", productRoutes);
