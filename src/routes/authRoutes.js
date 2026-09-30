@@ -2,9 +2,11 @@ import { Router } from "express";
 import { prisma } from "../config/db.js";
 import {
   change_password,
+  forgotPassword,
   login,
   me,
   register,
+  registerAdmin,
 } from "../controllers/authControllers.js";
 import { auth_middleware } from "../middlewares/authMiddleware.js";
 
@@ -48,6 +50,51 @@ export const authRoutes = Router();
  */
 
 authRoutes.post("/register", register);
+
+/**
+ * @openapi
+ * /auth/register-admin:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Register a new Admin
+ *     description: Dedicated endpoint to create an Admin account using a secret verification key.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *               - adminSecret
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Admin User"
+ *               email:
+ *                 type: string
+ *                 example: "admin@example.com"
+ *               password:
+ *                 type: string
+ *                 example: "AdminPass123!"
+ *               adminSecret:
+ *                 type: string
+ *                 description: Secret key matching process.env.ADMIN_REGISTRATION_SECRET
+ *                 example: "YourSuperSecretAdminKey123!"
+ *     responses:
+ *       201:
+ *         description: Admin registered successfully.
+ *       400:
+ *         description: Missing fields or user already exists.
+ *       403:
+ *         description: Invalid admin secret key.
+ *       500:
+ *         description: Internal server error.
+ */
+authRoutes.post("/register-admin", registerAdmin);
 
 /**
  * @openapi
@@ -122,7 +169,15 @@ authRoutes.post("/login", login);
  *         description: Unauthorized - missing or invalid token
  */
 authRoutes.get("/me", auth_middleware, me);
-
+/**
+ * @openapi
+ * /auth/forgot-password:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Request password reset token
+ */
+authRoutes.post("/forgot-password", forgotPassword);
 /**
  * @openapi
  * /auth/change-password:

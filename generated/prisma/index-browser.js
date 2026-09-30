@@ -120,11 +120,58 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.CartScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CartItemScalarFieldEnum = {
+  id: 'id',
+  cartId: 'cartId',
+  productId: 'productId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  totalAmount: 'totalAmount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  productId: 'productId',
+  quantity: 'quantity',
+  price: 'price'
+};
+
+exports.Prisma.ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  stock: 'stock',
+  image: 'image',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   password: 'password',
-  name: 'name'
+  name: 'name',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ProfileScalarFieldEnum = {
@@ -145,8 +192,30 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  PROCESSING: 'PROCESSING',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.Role = exports.$Enums.Role = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
 
 exports.Prisma.ModelName = {
+  Cart: 'Cart',
+  CartItem: 'CartItem',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
+  Product: 'Product',
   User: 'User',
   Profile: 'Profile'
 };

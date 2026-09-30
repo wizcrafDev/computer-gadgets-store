@@ -6,12 +6,13 @@ import {
 import {
   getProducts,
   getProductById,
-  createProduct,
   updateProduct,
   deleteProduct,
+  restock,
 } from "../controllers/productControllers.js";
 
 export const productRoutes = Router();
+
 /**
  * @openapi
  * /products:
@@ -25,6 +26,67 @@ export const productRoutes = Router();
  *         description: List of products fetched successfully
  */
 productRoutes.get("/", getProducts);
+
+/**
+ * @openapi
+ * /products/restock:
+ *   post:
+ *     summary: Bulk create or restock products (Admin only)
+ *     description: Allows admins to upload an array of products at once or a single product wrapped in an array.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             minItems: 1
+ *             description: An array of product objects to restock.
+ *             items:
+ *               type: object
+ *               required:
+ *                 - name
+ *                 - price
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   example: "Wireless Mechanical Keyboard"
+ *                 description:
+ *                   type: string
+ *                   nullable: true
+ *                   example: "RGB backlit mechanical keyboard with hot-swappable tactile switches."
+ *                 price:
+ *                   type: number
+ *                   format: float
+ *                   example: 89.99
+ *                 stock:
+ *                   type: integer
+ *                   default: 0
+ *                   example: 50
+ *                 images:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example:
+ *                     - "https://res.cloudinary.com/your-cloud/image/upload/v1234/keyboard-front.jpg"
+ *                     - "https://res.cloudinary.com/your-cloud/image/upload/v1234/keyboard-side.jpg"
+ *     responses:
+ *       201:
+ *         description: Products created/restocked successfully.
+ *       400:
+ *         description: Invalid request payload or missing required fields.
+ *       401:
+ *         description: Unauthorized - JWT token missing or invalid.
+ *       403:
+ *         description: Forbidden - Admin role required.
+ *       500:
+ *         description: Internal server error.
+ */
+
+productRoutes.post("/restock", auth_middleware, admin_middleware, restock);
 
 /**
  * @openapi
@@ -48,44 +110,6 @@ productRoutes.get("/", getProducts);
  *         description: Product not found
  */
 productRoutes.get("/:id", getProductById);
-/**
- * @openapi
- * /products:
- *   post:
- *     tags:
- *       - Products
- *     summary: Create a new product (Admin Only)
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - name
- *               - price
- *             properties:
- *               name:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- *               stock:
- *                 type: integer
- *               image:
- *                 type: string
- *     responses:
- *       201:
- *         description: Product created successfully
- *       401:
- *         description: Access Denied. Token missing or invalid.
- *       403:
- *         description: Access Forbidden. Admin role required.
- */
-productRoutes.post("/", auth_middleware, admin_middleware, createProduct);
 
 /**
  * @openapi
@@ -95,7 +119,7 @@ productRoutes.post("/", auth_middleware, admin_middleware, createProduct);
  *       - Products
  *     summary: Update product by ID (Admin Only)
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -116,6 +140,10 @@ productRoutes.post("/", auth_middleware, admin_middleware, createProduct);
  *                 type: number
  *               stock:
  *                 type: integer
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *               image:
  *                 type: string
  *     responses:
@@ -125,6 +153,8 @@ productRoutes.post("/", auth_middleware, admin_middleware, createProduct);
  *         description: Access Denied. Token missing or invalid.
  *       403:
  *         description: Access Forbidden. Admin role required.
+ *       404:
+ *         description: Product not found.
  */
 productRoutes.patch("/:id", auth_middleware, admin_middleware, updateProduct);
 
@@ -136,7 +166,7 @@ productRoutes.patch("/:id", auth_middleware, admin_middleware, updateProduct);
  *       - Products
  *     summary: Delete product by ID (Admin Only)
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -150,5 +180,7 @@ productRoutes.patch("/:id", auth_middleware, admin_middleware, updateProduct);
  *         description: Access Denied. Token missing or invalid.
  *       403:
  *         description: Access Forbidden. Admin role required.
+ *       404:
+ *         description: Product not found.
  */
 productRoutes.delete("/:id", auth_middleware, admin_middleware, deleteProduct);

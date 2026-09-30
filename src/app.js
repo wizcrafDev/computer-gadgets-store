@@ -1,11 +1,17 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { userRoute } from "./routes/userRoutes.js";
 import { authRoutes } from "./routes/authRoutes.js";
 import { productRoutes } from "./routes/productRoutes.js";
+import { cartRoutes } from "./routes/cartRoutes.js";
+import { orderRoutes } from "./routes/orderRoutes.js";
 import { logger } from "./middlewares/logger.js";
 import { auth_middleware } from "./middlewares/authMiddleware.js";
+import { adminOrderRoutes } from "./routes/orderRoutes.js";
 
 export const app = express();
 
@@ -49,3 +55,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/users", userRoute);
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
+app.use("/cart", cartRoutes);
+app.use("/orders", orderRoutes);
+app.use("/admin/orders", adminOrderRoutes);
