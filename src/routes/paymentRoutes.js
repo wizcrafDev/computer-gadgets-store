@@ -17,7 +17,7 @@ const paymentRoutes = express.Router();
  *     summary: Initialize Paystack payment for an order
  *     description: Generates a Paystack checkout authorization URL and payment reference for an existing user order.
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -68,7 +68,7 @@ paymentRoutes.post("/initialize", auth_middleware, initializePayment);
  *     summary: Verify payment status via Paystack transaction reference
  *     description: Endpoint called after customer completes Paystack checkout to verify payment and mark order as PAID.
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: reference

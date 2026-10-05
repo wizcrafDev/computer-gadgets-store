@@ -24,6 +24,13 @@ export const initializePayment = async (req, res) => {
 
     const amountInKobo = Math.round(order.totalAmount * 100);
 
+    console.log("PAYSTACK_SECRET_KEY:", process.env.PAYSTACK_SECRET_KEY);
+    console.log(
+      "starts with sk_:",
+      process.env.PAYSTACK_SECRET_KEY?.startsWith("sk_"),
+    );
+    console.log("length:", process.env.PAYSTACK_SECRET_KEY?.length);
+
     const paystackResponse = await axios.post(
       "https://api.paystack.co/transaction/initialize",
       {

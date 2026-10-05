@@ -44,14 +44,14 @@ export const restock = async (req, res) => {
   try {
     const products = req.body;
 
-    // 1. Ensure req.body is actually a non-empty array
+    // Ensuring req.body is actually a non empty array
     if (!Array.isArray(products) || products.length === 0) {
       return res.status(400).json({
         message: "Please provide a non-empty array of products to restock.",
       });
     }
 
-    // 2. Validate essential fields and numbers
+    // Validate essential fields and numbers
     for (const item of products) {
       if (!item.name || item.price === undefined) {
         return res.status(400).json({
@@ -67,7 +67,7 @@ export const restock = async (req, res) => {
       }
     }
 
-    // 3. Format payload safely for Prisma
+    // Format payload safely for Prisma
     const formattedProducts = products.map((item) => {
       const { name, description, price, stock, images, image } = item;
 
@@ -76,7 +76,7 @@ export const restock = async (req, res) => {
         description: description || null,
         price: parseFloat(price),
         stock: isNaN(parseInt(stock, 10)) ? 0 : parseInt(stock, 10),
-        images: Array.isArray(images)
+        image: Array.isArray(images)
           ? images
           : typeof image === "string" && image.trim() !== ""
             ? [image]
@@ -84,7 +84,7 @@ export const restock = async (req, res) => {
       };
     });
 
-    // 4. Bulk insert into database
+    // Bulk insert into database
     const createdProducts = await prisma.product.createManyAndReturn({
       data: formattedProducts,
     });

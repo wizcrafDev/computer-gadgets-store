@@ -30,7 +30,7 @@ export const auth_middleware = async (req, res, next) => {
   }
 };
 
-export const admin_middleware = async (req, res, next) => {
+export const admin_middleware = (req, res, next) => {
   if (req.user && req.user.role === "ADMIN") {
     return next();
   }

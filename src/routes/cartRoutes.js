@@ -19,10 +19,8 @@ cartRoutes.use(auth_middleware);
  *   get:
  *     tags:
  *       - Cart
- *     summary: Fetch the authenticated user's cart
- *     description: Retrieves or initializes the current user's shopping cart along with populated product details.
- *     security:
- *       - BearerAuth: []
+ *     summary: Fetch the current shopping cart
+ *     description: Retrieves or initializes the current client's shopping cart along with populated product details.
  *     responses:
  *       200:
  *         description: Cart retrieved successfully.
@@ -35,14 +33,73 @@ cartRoutes.use(auth_middleware);
  *                   type: string
  *                   example: "Cart retrieved successfully"
  *                 data:
- *                   $ref: '#/components/schemas/Cart'
- *       401:
- *         description: Unauthorized - Token missing or invalid.
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "7f8c9a12-3b45-4d67-8901-234567890abc"
+ *                     userId:
+ *                       type: string
+ *                       example: "e28322ca-7c22-482d-a3a8-442bd2304df3"
+ *                     items:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                             example: "a1234567-b89c-4d01-2345-6789abcdef01"
+ *                           cartId:
+ *                             type: string
+ *                             example: "7f8c9a12-3b45-4d67-8901-234567890abc"
+ *                           productId:
+ *                             type: string
+ *                             example: "e28322ca-7c22-482d-a3a8-442bd2304df3"
+ *                           quantity:
+ *                             type: integer
+ *                             example: 2
+ *                           product:
+ *                             type: object
+ *                             properties:
+ *                               id:
+ *                                 type: string
+ *                                 example: "e28322ca-7c22-482d-a3a8-442bd2304df3"
+ *                               name:
+ *                                 type: string
+ *                                 example: "Dell Latitude 5420"
+ *                               description:
+ *                                 type: string
+ *                                 nullable: true
+ *                                 example: "Business laptop with Intel Core i5 processor"
+ *                               price:
+ *                                 type: number
+ *                                 format: float
+ *                                 example: 450000
+ *                               stock:
+ *                                 type: integer
+ *                                 example: 10
+ *                               image:
+ *                                 type: array
+ *                                 items:
+ *                                   type: string
+ *                                 example:
+ *                                   - "https://example.com/laptop.jpg"
+ *                               createdAt:
+ *                                 type: string
+ *                                 format: date-time
+ *                               updatedAt:
+ *                                 type: string
+ *                                 format: date-time
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
  *       500:
  *         description: Internal server error.
  */
 cartRoutes.get("/", getCart);
-
 /**
  * @openapi
  * /cart/items:
@@ -52,7 +109,7 @@ cartRoutes.get("/", getCart);
  *     summary: Add an item to the cart
  *     description: Adds a product to the cart. Increments quantity if the item is already present.
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -82,7 +139,62 @@ cartRoutes.get("/", getCart);
  *                   type: string
  *                   example: "Item added to cart"
  *                 data:
- *                   $ref: '#/components/schemas/Cart'
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "7f8c9a12-3b45-4d67-8901-234567890abc"
+ *                     userId:
+ *                       type: string
+ *                       example: "e28322ca-7c22-482d-a3a8-442bd2304df3"
+ *                     items:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                           cartId:
+ *                             type: string
+ *                           productId:
+ *                             type: string
+ *                           quantity:
+ *                             type: integer
+ *                             example: 2
+ *                           product:
+ *                             type: object
+ *                             properties:
+ *                               id:
+ *                                 type: string
+ *                               name:
+ *                                 type: string
+ *                                 example: "Dell Latitude 5420"
+ *                               description:
+ *                                 type: string
+ *                                 nullable: true
+ *                               price:
+ *                                 type: number
+ *                                 format: float
+ *                                 example: 450000
+ *                               stock:
+ *                                 type: integer
+ *                                 example: 10
+ *                               image:
+ *                                 type: array
+ *                                 items:
+ *                                   type: string
+ *                               createdAt:
+ *                                 type: string
+ *                                 format: date-time
+ *                               updatedAt:
+ *                                 type: string
+ *                                 format: date-time
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
  *       400:
  *         description: Missing required productId or invalid quantity.
  *       401:
@@ -93,7 +205,6 @@ cartRoutes.get("/", getCart);
  *         description: Internal server error.
  */
 cartRoutes.post("/items", addToCart);
-
 /**
  * @openapi
  * /cart/items/{id}:

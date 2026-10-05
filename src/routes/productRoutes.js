@@ -21,6 +21,7 @@ export const productRoutes = Router();
  *       - Products
  *     summary: Get all products
  *     description: Retrieves a list of all available products in the store.
+ *     security: []
  *     responses:
  *       200:
  *         description: List of products fetched successfully
@@ -36,7 +37,7 @@ productRoutes.get("/", getProducts);
  *     tags:
  *       - Products
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -119,7 +120,7 @@ productRoutes.get("/:id", getProductById);
  *       - Products
  *     summary: Update product by ID (Admin Only)
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -166,7 +167,7 @@ productRoutes.patch("/:id", auth_middleware, admin_middleware, updateProduct);
  *       - Products
  *     summary: Delete product by ID (Admin Only)
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

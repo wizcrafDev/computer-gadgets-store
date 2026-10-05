@@ -30,7 +30,7 @@ orderRoutes.use(auth_middleware);
  *     summary: Place a new order
  *     description: Customer converts cart into a new order. Decrements product inventory.
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Order placed successfully.
@@ -48,7 +48,7 @@ orderRoutes.post("/", createOrder);
  *     summary: Get my orders
  *     description: Retrieves list of orders placed by logged-in customer.
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Orders retrieved.
@@ -181,7 +181,7 @@ adminOrderRoutes.patch("/:id/status", updateOrderStatus);
  *       - Admin Orders
  *     summary: Admin cancel user order
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

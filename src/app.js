@@ -12,6 +12,7 @@ import { orderRoutes } from "./routes/orderRoutes.js";
 import { logger } from "./middlewares/logger.js";
 import { auth_middleware } from "./middlewares/authMiddleware.js";
 import { adminOrderRoutes } from "./routes/orderRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 export const app = express();
 
@@ -44,6 +45,12 @@ const swaggerOptions = {
         },
       },
     },
+    //Apply bearerAuth globally to all routes, or specify it per route
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: ["./src/routes/*.js"],
 };
@@ -58,3 +65,4 @@ app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
 app.use("/admin/orders", adminOrderRoutes);
+app.use("/payments", paymentRoutes);
