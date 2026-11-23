@@ -5,6 +5,7 @@ A RESTful API for an e-commerce application focused on computer gadgets and acce
 ## Features
 
 ### Authentication and User Management
+
 - User registration and login.
 - Password hashing with bcrypt.
 - JWT-based authentication.
@@ -13,6 +14,7 @@ A RESTful API for an e-commerce application focused on computer gadgets and acce
 - Role-based access control for administrators.
 
 ### Product Management
+
 - Retrieve all available products.
 - Retrieve individual products.
 - Create and restock products in bulk.
@@ -21,6 +23,7 @@ A RESTful API for an e-commerce application focused on computer gadgets and acce
 - Restrict product management operations to administrators.
 
 ### Shopping Cart
+
 - Create or retrieve a user's cart.
 - Add products to the cart.
 - Update item quantities.
@@ -28,6 +31,7 @@ A RESTful API for an e-commerce application focused on computer gadgets and acce
 - Clear the cart.
 
 ### Order Management
+
 - Create orders from shopping cart items.
 - Check product stock before order creation.
 - Automatically update inventory after successful order creation.
@@ -36,6 +40,7 @@ A RESTful API for an e-commerce application focused on computer gadgets and acce
 - Admin access to all customer orders and order status management.
 
 ### Payment Integration
+
 - Initialize payments through Paystack.
 - Verify payment transactions.
 - Handle Paystack webhook notifications.
@@ -43,18 +48,18 @@ A RESTful API for an e-commerce application focused on computer gadgets and acce
 
 ## Technology Stack
 
-| Technology | Purpose |
-|---|---|
-| Node.js | JavaScript runtime |
-| Express 5 | REST API framework |
-| PostgreSQL | Relational database |
-| Prisma ORM | Database access and schema management |
-| JWT | Authentication |
-| bcrypt | Password hashing |
-| Swagger / OpenAPI | API documentation |
-| Paystack | Payment integration |
-| Nodemailer | Email delivery |
-| Axios | HTTP requests |
+| Technology        | Purpose                               |
+| ----------------- | ------------------------------------- |
+| Node.js           | JavaScript runtime                    |
+| Express 5         | REST API framework                    |
+| PostgreSQL        | Relational database                   |
+| Prisma ORM        | Database access and schema management |
+| JWT               | Authentication                        |
+| bcrypt            | Password hashing                      |
+| Swagger / OpenAPI | API documentation                     |
+| Paystack          | Payment integration                   |
+| Nodemailer        | Email delivery                        |
+| Axios             | HTTP requests                         |
 
 ## Getting Started
 
@@ -130,17 +135,23 @@ http://localhost:5001/api-docs
 
 Use the documentation to explore available endpoints, inspect request parameters and test API operations.
 
+### Swagger UI
+
+The API documentation is available through Swagger UI when the server is running.
+
+![Swagger API Documentation](./screenshot/api-documentation.png)
+
 ## Main API Routes
 
-| Route | Purpose |
-|---|---|
-| `/auth` | Authentication and account management |
-| `/users` | User operations |
-| `/products` | Product management |
-| `/cart` | Shopping cart operations |
-| `/orders` | Customer order operations |
-| `/admin/orders` | Administrative order management |
-| `/payments` | Paystack payment operations |
+| Route           | Purpose                               |
+| --------------- | ------------------------------------- |
+| `/auth`         | Authentication and account management |
+| `/users`        | User operations                       |
+| `/products`     | Product management                    |
+| `/cart`         | Shopping cart operations              |
+| `/orders`       | Customer order operations             |
+| `/admin/orders` | Administrative order management       |
+| `/payments`     | Paystack payment operations           |
 
 Protected endpoints require a valid JWT bearer token. Administrative endpoints also require administrator privileges.
 
@@ -149,8 +160,8 @@ Protected endpoints require a valid JWT bearer token. Administrative endpoints a
 \`\`\`text
 src/
 ├── config/
-│   ├── db.js
-│   └── email.js
+│ ├── db.js
+│ └── email.js
 ├── controllers/
 ├── middlewares/
 ├── models/
