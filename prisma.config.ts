@@ -6,7 +6,6 @@ import { defineConfig } from "prisma/config";
 
 //forcing load .env from project root
 dotenv.config({ path: path.resolve(__dirname, ".env") });
-console.log("Loaded DATABASE_URL:", process.env.DATABASE_URL);
 
 export default defineConfig({
   // schema: "prisma/schema.prisma",

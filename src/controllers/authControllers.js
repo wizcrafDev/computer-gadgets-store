@@ -5,7 +5,6 @@ import { generate_jwt } from "../middlewares/authMiddleware.js";
 import { messenger } from "../config/email.js";
 
 export const register = async (req, res) => {
-  console.log("RECEIVED BODY:", req.body);
   try {
     if (!req.body) {
       return res.status(400).json({ message: "Request body is missing" });
@@ -173,7 +172,6 @@ export const register = async (req, res) => {
     });
   }
 };
-
 // Register as ADMIN
 export const registerAdmin = async (req, res) => {
   try {
@@ -233,7 +231,6 @@ export const registerAdmin = async (req, res) => {
 // login endpoint
 export const login = async (req, res) => {
   try {
-    console.log("username:", req.user_name);
     // get email and password
     const { email, password } = req.body;
     if (!email || !password) {
@@ -247,7 +244,6 @@ export const login = async (req, res) => {
     if (!exist_user)
       return res.status(400).json({ message: "invalid email or password" });
 
-    console.log("exist_user_password: ", typeof exist_user.password);
     // compare password
     const is_password_match = await bcrypt.compare(
       password,
@@ -286,7 +282,6 @@ export const login = async (req, res) => {
 export const me = async (req, res) => {
   try {
     const user_id = req.user_id;
-    console.log("user_id: ", user_id);
     const user = await prisma.user.findUnique({
       where: { id: user_id },
       select: {

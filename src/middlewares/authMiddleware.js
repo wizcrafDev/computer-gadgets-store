@@ -38,6 +38,3 @@ export const admin_middleware = (req, res, next) => {
     .status(403)
     .json({ message: "Access forbidden. Admin role required." });
 };
-
-// bearer xfahekljlw32iu8349u9
-// ['bearer', 'xfaheklj']
